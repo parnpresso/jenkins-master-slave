@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  jenkins-master:
+    build:
+      context: ./
+      dockerfile: Dockerfile.master
+    ports:
+      - "80:8080"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - deployment
+
+  jenkins-slave-01:
+    build:
+      context: ./
+      dockerfile: Dockerfile.slave
+    networks:
+      - deployment
+
+  jenkins-slave-02:
+    build:
+      context: ./
+      dockerfile: Dockerfile.slave
+    networks:
+      - deployment
+
+networks:
+  deployment:
+    driver: bridge
